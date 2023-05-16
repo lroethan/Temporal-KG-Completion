@@ -3,217 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <title>知识补全系统</title>
-  <link rel="stylesheet" href="https://gw.alipayobjects.com/os/lib/antv/g6/3.7.2/dist/g6.min.css">
-  <script src="https://gw.alipayobjects.com/os/lib/antv/g6/3.7.2/dist/g6.min.js"></script>
+  <link rel="stylesheet" href="https://gw.alipayobjects.com/os/lib/antv/g6/3.5.5/dist/g6.min.css">
+  <script src="https://gw.alipayobjects.com/os/lib/antv/g6/3.5.5/dist/g6.min.js"></script>
   <style>
-    #container {
-      width: 100%;
-      height: 800px;
+    body {
+      background-color: #f7f7f7;
+      font-family: Arial, Helvetica, sans-serif;
     }
-    .node {
+    .header {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 80px;
       height: 80px;
+      background-color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .visualization {
+      width: 70%;
+      height: 800px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .search {
+      width: 28%;
+      background-color: #f7f7f7;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .input {
+      display: flex;
+      flex-direction: column;
+      margin: 20px;
+    }
+    .input-label {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      border: none;
+      padding: 10px;
       background-color: #f0f0f0;
-      border: 2px solid #ccc;
-      border-radius: 50%;
+      border-radius: 4px;
       font-size: 16px;
-      user-select: none;
-      cursor: move;
+      color: #333;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
-    .node-A {
-      background-color: #7cb305;
-      border-color: #5b8c00;
-    }
-    .node-B {
+    .btn {
+      border: none;
+      padding: 10px 20px;
       background-color: #1890ff;
-      border-color: #096dd9;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
     }
-    .node-C {
-      background-color: #f5222d;
-      border-color: #cf1322;
+    .btn:hover {
+      background-color: #40a9ff;
     }
-    .node-D {
-      background-color: #faad14;
-      border-color: #d48806;
+    .ranking-list {
+      margin: 20px;
+    }
+    .ranking-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+    }
+    .ranking-item:hover {
+      background-color: #f0f0f0;
+    }
+    .text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    .score {
+      font-size: 16px;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div id="container"></div>
-  <div>
-    <div class="input">
-      <label class="input-label" for="entity-input">头实体</label>
-      <input type="text" id="entity-input">
-    </div>
-    <div class="input">
-      <label class="input-label" for="relation-input">关系</label>
-      <input type="text" id="relation-input">
-    </div>
-    <div class="input">
-      <label class="input-label" for="time-input">开始时间-结束时间</label>
-      <input type="text" id="time-input">
-    </div>
-    <button class="btn" id="search-btn">搜索</button>
+  <div class="header">
+    <h1 class="title">知识补全系统</h1>
   </div>
-  <div class="ranking-list">
-    <div class="ranking-item">
-      <div class="text">文本串1</div>
-      <div class="score">0.9</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串2</div>
-      <div class="score">0.8</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串3</div>
-      <div class="score">0.7</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串4</div>
-      <div class="score">0.6</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串5</div>
-      <div class="score">0.5</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串6</div>
-      <div class="score">0.4</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串7</div>
-      <div class="score">0.3</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串8</div>
-      <div class="score">0.2</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串9</div>
-      <div class="score">0.1</div>
-    </div>
-    <div class="ranking-item">
-      <div class="text">文本串10</div>
-      <div class="score">0.0</div>
+  <div class="container">
+    <div class="visualization" id="visualization"></div>
+    <div class="search">
+      <div class="input">
+        <div class="input-label">请输入缺失的四元组</div>
+        <input type="text" id="searchInput">
+        <button class="btn" id="searchBtn">执行补全</button>
+      </div>
+      <div class="ranking-list" id="rankingList"></div>
     </div>
   </div>
   <script>
+    // 定义知识图谱数据
     const data = {
       nodes: [
-        { id: 'A', label: '美国' },
-        { id: 'B', label: '总统' },
-        { id: 'C', label: '2007-2015' },
-        { id: 'D', label: '奥巴马' }
+        { id: 'node1', label: '实体1' },
+        { id: 'node2', label: '实体2' },
+        { id: 'node3', label: '实体3' },
+        { id: 'node4', label: '实体4' },
+        { id: 'node5', label: '实体5' },
+        { id: 'node6', label: '实体6' },
+        { id: 'node7', label: '实体7' },
+        { id: 'node8', label: '实体8' },
+        { id: 'node9', label: '实体9' },
+        { id: 'node10', label: '实体10' },
+        { id: 'node11', label: '实体11' },
+        { id: 'node12', label: '实体12' },
+        { id: 'node13', label: '实体13' },
+        { id: 'node14', label: '实体14' },
+        { id: 'node15', label: '实体15' },
+        { id: 'node16', label: '实体16' },
+        { id: 'node17', label: '实体17' },
+        { id: 'node18', label: '实体18' },
+        { id: 'node19', label: '实体19' },
+        { id: 'node20', label: '实体20' }
       ],
       edges: [
-        { source: 'A', target: 'D', label: '国家' },
-        { source: 'B', target: 'D', label: '职位' },
-        { source: 'C', target: 'D', label: '时间' }
+        { source: 'node1', target: 'node2' },
+        { source: 'node1', target: 'node3' },
+        { source: 'node2', target: 'node4' },
+        { source: 'node2', target: 'node5' },
+        { source: 'node3', target: 'node6' },
+        { source: 'node3', target: 'node7' },
+        { source: 'node4', target: 'node8' },
+        { source: 'node4', target: 'node9' },
+        { source: 'node5', target: 'node10' },
+        { source: 'node5', target: 'node11' },
+        { source: 'node6', target: 'node12' },
+        { source: 'node6', target: 'node13' },
+        { source: 'node7', target: 'node14' },
+        { source: 'node7', target: 'node15' },
+        { source: 'node8', target: 'node16' },
+        { source: 'node8', target: 'node17' },
+        { source: 'node9', target: 'node18' },
+        { source: 'node9', target: 'node19' },
+        { source: 'node10', target: 'node20' }
       ]
     };
 
-    const container = document.getElementById('container');
-    const width = container.scrollWidth;
-    const height = container.scrollHeight || 500;
+    // 创建知识图谱实例
     const graph = new G6.Graph({
-      container: 'container',
-      width,
-      height,
+      container: 'visualization',
+      width: 800,
+      height: 800,
+      layout: {
+        type: 'force',
+        linkDistance: 100,
+        preventOverlap: true,
+      },
       modes: {
-        default: ['drag-node', 'zoom-canvas']
+        default: ['drag-canvas', 'zoom-canvas']
       },
       defaultNode: {
-        shape: 'circle',
-        size: 80,
+        size: 30,
         style: {
-          fill: '#f0f0f0',
-          lineWidth: 2,
-          stroke: '#ccc',
-          cursor: 'move'
+          fill: '#C6E5FF',
+          stroke: '#5B8FF9',
+          lineWidth: 1
         },
         labelCfg: {
           style: {
-            fill: '#333',
-            fontSize: 16,
-            fontWeight: 'bold'
-          },
-          position: 'center',
-          refY: 10 // 调整标签的位置
+            fill: '#000',
+            fontSize: 12
+          }
         }
       },
       defaultEdge: {
-        type: 'cubic-horizontal',
+        size: 1,
         style: {
-          stroke: '#666',
-          lineWidth: 2,
-          endArrow: {
-            path: 'M 0,0 L 8,4 L 8,-4 Z',
-            fill: '#666'
-          }
-        },
-        labelCfg: {
-          style: {
-            fill: '#666',
-            fontSize: 12
-          },
-          position: 'center'
+          stroke: '#e2e2e2',
+          lineWidth: 1
         }
-      },
-      layout: {
-        type: 'dagre',
-        rankdir: 'LR',
-        nodesepFunc: () => 1,
-        ranksepFunc: () => 1
-      },
-      fitView: true,
-      animate: true,
-      data
+      }
     });
-
+    graph.data(data);
     graph.render();
 
-    const searchBtn = document.getElementById('search-btn');
-    const entityInput = document.getElementById('entity-input');
-    const relationInput = document.getElementById('relation-input');
-    const timeInput = document.getElementById('time-input');
-    const rankingList = document.querySelector('.ranking-list');
+    // 处理搜索事件
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const rankingList = document.getElementById('rankingList');
+
     searchBtn.addEventListener('click', () => {
-      const entity = entityInput.value;
-      const relation = relationInput.value;
-      const time = timeInput.value;
-      const searchResults = [
-        { text: '奥巴马在2008年当选美国总统', score: 0.9 },
-        { text: '特朗普在2016年当选美国总统', score: 0.8 },
-        { text: '克林顿担任美国总统', score: 0.7 },
-        { text: '拜登于2021年就任美国总统', score: 0.6 },
-        { text: '美国总统奥巴马参观中国', score: 0.5 },
-        { text: '中国国家主席习近平访问美国', score: 0.4 },
-        { text: '美国与俄罗斯签署核裁军协议', score: 0.3 },
-        { text: '美国参议院通过医疗改革法案', score: 0.2 },
-        { text: '美国与伊朗签署核协议', score: 0.1 },
-        { text: '美国总统特朗普访问朝鲜', score: 0 }
-      ];
+      const keyword = searchInput.value.trim();
+      const searchResults = [];
+
+      // 搜索与关键字匹配的实体
+      for (let i = 0; i < data.nodes.length; i++) {
+        const node = data.nodes[i];
+        if (node.label.includes(keyword)) {
+          searchResults.push({
+            target: node,
+            score: Math.random() // 暂时用随机数代替得分
+          });
+        }
+      }
+
+      // 根据得分对搜索结果进行排序
+      searchResults.sort((a, b) => b.score - a.score);
+
+      // 清空排名列表
       rankingList.innerHTML = '';
-      generateRankingList(searchResults);
-    });
-    function generateRankingList(searchResults) {
-      searchResults.forEach((result, index) => {
+
+      // 将排名列表// 将排名列表添加到DOM中
+      for (let i = 0; i < searchResults.length; i++) {
+        const result = searchResults[i];
         const rankingItem = document.createElement('div');
         rankingItem.classList.add('ranking-item');
+
         const text = document.createElement('div');
         text.classList.add('text');
-        text.innerText = result.text;
+        text.innerText = result.target.label;
+        rankingItem.appendChild(text);
+
         const score = document.createElement('div');
         score.classList.add('score');
-        score.innerText = result.score.toFixed(2);
-        rankingItem.appendChild(text);
+        score.innerText = `得分：${result.score.toFixed(2)}`;
         rankingItem.appendChild(score);
+
         rankingList.appendChild(rankingItem);
+      }
+
+      // 高亮搜索结果及其邻居节点
+      const highlightNodes = searchResults.map(result => result.target.id);
+      const neighborNodes = [];
+      for (let i = 0; i < searchResults.length; i++) {
+        const result = searchResults[i];
+        const sourceEdges = graph.getEdges().filter(edge => edge.getSource().getID() === result.target.id);
+        const targetEdges = graph.getEdges().filter(edge => edge.getTarget().getID() === result.target.id);
+        const neighborEdges = [...sourceEdges, ...targetEdges];
+        neighborEdges.forEach(edge => {
+          const sourceID = edge.getSource().getID();
+          const targetID = edge.getTarget().getID();
+          neighborNodes.push(sourceID, targetID);
+        });
+      }
+      const uniqueNeighborNodes = [...new Set(neighborNodes)];
+      const highlightNodesSet = new Set(highlightNodes);
+      const nodes = graph.getNodes();
+      nodes.forEach(node => {
+        if (highlightNodesSet.has(node.getID())) {
+          node.update({ style: { fill: '#5B8FF9', stroke: '#5B8FF9' } });
+        } else if (uniqueNeighborNodes.includes(node.getID())) {
+          node.update({ style: { fill: '#C6E5FF', stroke: '#5B8FF9' } });
+        } else {
+          node.update({ style: { fill: '#C6E5FF', stroke: '#e2e2e2' } });
+        }
       });
-    }
+    });
   </script>
 </body>
 </html>
