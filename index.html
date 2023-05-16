@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>知识补全系统</title>
+  <link rel="stylesheet" href="https://gw.alipayobjects.com/os/lib/antv/g6/3.7.2/dist/g6.min.css">
+  <script src="https://gw.alipayobjects.com/os/lib/antv/g6/3.7.2/dist/g6.min.js"></script>
+  <style>
+    #container {
+      width: 100%;
+      height: 800px;
+    }
+    .node {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      height: 80px;
+      background-color: #f0f0f0;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      font-size: 16px;
+      user-select: none;
+      cursor: move;
+    }
+    .node-A {
+      background-color: #7cb305;
+      border-color: #5b8c00;
+    }
+    .node-B {
+      background-color: #1890ff;
+      border-color: #096dd9;
+    }
+    .node-C {
+      background-color: #f5222d;
+      border-color: #cf1322;
+    }
+    .node-D {
+      background-color: #faad14;
+      border-color: #d48806;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <div>
+    <div class="input">
+      <label class="input-label" for="entity-input">头实体</label>
+      <input type="text" id="entity-input">
+    </div>
+    <div class="input">
+      <label class="input-label" for="relation-input">关系</label>
+      <input type="text" id="relation-input">
+    </div>
+    <div class="input">
+      <label class="input-label" for="time-input">开始时间-结束时间</label>
+      <input type="text" id="time-input">
+    </div>
+    <button class="btn" id="search-btn">搜索</button>
+  </div>
+  <div class="ranking-list">
+    <div class="ranking-item">
+      <div class="text">文本串1</div>
+      <div class="score">0.9</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串2</div>
+      <div class="score">0.8</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串3</div>
+      <div class="score">0.7</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串4</div>
+      <div class="score">0.6</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串5</div>
+      <div class="score">0.5</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串6</div>
+      <div class="score">0.4</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串7</div>
+      <div class="score">0.3</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串8</div>
+      <div class="score">0.2</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串9</div>
+      <div class="score">0.1</div>
+    </div>
+    <div class="ranking-item">
+      <div class="text">文本串10</div>
+      <div class="score">0.0</div>
+    </div>
+  </div>
+  <script>
+    const data = {
+      nodes: [
+        { id: 'A', label: '美国' },
+        { id: 'B', label: '总统' },
+        { id: 'C', label: '2007-2015' },
+        { id: 'D', label: '奥巴马' }
+      ],
+      edges: [
+        { source: 'A', target: 'D', label: '国家' },
+        { source: 'B', target: 'D', label: '职位' },
+        { source: 'C', target: 'D', label: '时间' }
+      ]
+    };
+
+    const container = document.getElementById('container');
+    const width = container.scrollWidth;
+    const height = container.scrollHeight || 500;
+    const graph = new G6.Graph({
+      container: 'container',
+      width,
+      height,
+      modes: {
+        default: ['drag-node', 'zoom-canvas']
+      },
+      defaultNode: {
+        shape: 'circle',
+        size: 80,
+        style: {
+          fill: '#f0f0f0',
+          lineWidth: 2,
+          stroke: '#ccc',
+          cursor: 'move'
+        },
+        labelCfg: {
+          style: {
+            fill: '#333',
+            fontSize: 16,
+            fontWeight: 'bold'
+          },
+          position: 'center',
+          refY: 10 // 调整标签的位置
+        }
+      },
+      defaultEdge: {
+        type: 'cubic-horizontal',
+        style: {
+          stroke: '#666',
+          lineWidth: 2,
+          endArrow: {
+            path: 'M 0,0 L 8,4 L 8,-4 Z',
+            fill: '#666'
+          }
+        },
+        labelCfg: {
+          style: {
+            fill: '#666',
+            fontSize: 12
+          },
+          position: 'center'
+        }
+      },
+      layout: {
+        type: 'dagre',
+        rankdir: 'LR',
+        nodesepFunc: () => 1,
+        ranksepFunc: () => 1
+      },
+      fitView: true,
+      animate: true,
+      data
+    });
+
+    graph.render();
+
+    const searchBtn = document.getElementById('search-btn');
+    const entityInput = document.getElementById('entity-input');
+    const relationInput = document.getElementById('relation-input');
+    const timeInput = document.getElementById('time-input');
+    const rankingList = document.querySelector('.ranking-list');
+    searchBtn.addEventListener('click', () => {
+      const entity = entityInput.value;
+      const relation = relationInput.value;
+      const time = timeInput.value;
+      const searchResults = [
+        { text: '奥巴马在2008年当选美国总统', score: 0.9 },
+        { text: '特朗普在2016年当选美国总统', score: 0.8 },
+        { text: '克林顿担任美国总统', score: 0.7 },
+        { text: '拜登于2021年就任美国总统', score: 0.6 },
+        { text: '美国总统奥巴马参观中国', score: 0.5 },
+        { text: '中国国家主席习近平访问美国', score: 0.4 },
+        { text: '美国与俄罗斯签署核裁军协议', score: 0.3 },
+        { text: '美国参议院通过医疗改革法案', score: 0.2 },
+        { text: '美国与伊朗签署核协议', score: 0.1 },
+        { text: '美国总统特朗普访问朝鲜', score: 0 }
+      ];
+      rankingList.innerHTML = '';
+      generateRankingList(searchResults);
+    });
+    function generateRankingList(searchResults) {
+      searchResults.forEach((result, index) => {
+        const rankingItem = document.createElement('div');
+        rankingItem.classList.add('ranking-item');
+        const text = document.createElement('div');
+        text.classList.add('text');
+        text.innerText = result.text;
+        const score = document.createElement('div');
+        score.classList.add('score');
+        score.innerText = result.score.toFixed(2);
+        rankingItem.appendChild(text);
+        rankingItem.appendChild(score);
+        rankingList.appendChild(rankingItem);
+      });
+    }
+  </script>
+</body>
+</html>
