@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>预测</title>
+</head>
+<body>
+    <h1>请输入以下信息进行预测</h1>
+    <form action="/predict" method="POST">
+        <label for="k">候选数量：</label>
+        <input type="text" id="k" name="k"><br><br>
+
+        <label for="pred_mode">候选类型：</label>
+        <select id="pred_mode" name="pred_mode">
+            <option value="head">头实体</option>
+            <option value="rel">关系</option>
+            <option value="tail">尾实体</option>
+        </select><br><br>
+
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
