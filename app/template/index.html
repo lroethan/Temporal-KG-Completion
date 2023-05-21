@@ -2,21 +2,99 @@
 <html>
 <head>
     <title>预测</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F8F8F8;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333333;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #CCCCCC;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3E8E41;
+        }
+    </style>
 </head>
 <body>
-    <h1>请输入以下信息进行预测</h1>
-    <form action="/predict" method="POST">
-        <label for="k">候选数量：</label>
-        <input type="text" id="k" name="k"><br><br>
+    <div id="app">
+        <div class="container">
+            <h1>请输入以下信息进行预测</h1>
+            <form @submit.prevent="submitForm">
+                <label for="k">候选数量：</label>
+                <input type="text" id="k" name="k" v-model="form.k"><br><br>
 
-        <label for="pred_mode">候选类型：</label>
-        <select id="pred_mode" name="pred_mode">
-            <option value="head">头实体</option>
-            <option value="rel">关系</option>
-            <option value="tail">尾实体</option>
-        </select><br><br>
+                <label for="pred_mode">候选类型：</label>
+                <select id="pred_mode" name="pred_mode" v-model="form.pred_mode">
+                    <option value="head">头实体</option>
+                    <option value="rel">关系</option>
+                    <option value="tail">尾实体</option>
+                </select><br><br>
 
-        <input type="submit" value="提交">
-    </form>
+                <input type="submit" value="提交">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                form: {
+                    k: '',
+                    pred_mode: 'head'
+                }
+            },
+            methods: {
+                submitForm() {
+                    // 在这里添加提交表单的逻辑
+                    console.log(this.form);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
